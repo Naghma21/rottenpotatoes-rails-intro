@@ -17,8 +17,11 @@ class MoviesController < ApplicationController
       @orderList=params[:order]
     else
       @orderList=session[:order]
-      redirectFlag=1
+      
       #redirect_to movies_path(order: session[:order],ratings: session[:ratings])
+    end
+    if (params[:order]==nil && session[:order]!=nil)
+      redirectFlag=1
     end
     if params[:order]!= session[:order]
       session[:order]=@orderList
