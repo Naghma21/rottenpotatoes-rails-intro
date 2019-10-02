@@ -54,6 +54,7 @@ class MoviesController < ApplicationController
         #redirect_to movies_path(order: session[:order],ratings: session[:ratings])
       else
         @ratings=Hash[@all_ratings.collect {|rating| [rating, rating]}]
+        session[:ratings]=@ratings
         #puts @ratings
         @movies=@movies
       end
