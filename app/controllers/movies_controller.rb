@@ -38,20 +38,20 @@ class MoviesController < ApplicationController
     if params[:ratings]
       @ratings=params[:ratings]
       session[:ratings]=@ratings
-      puts "parampresent"
-      puts @ratings
+      #puts "parampresent"
+      #puts @ratings
       @movies=@movies.where(rating: @ratings.keys)
     else
       if session[:ratings]
         @ratings=session[:ratings]
-        puts "sessionpresent"
-        puts @ratings
+        #puts "sessionpresent"
+        #puts @ratings
         @movies=@movies.where(rating: @ratings.keys)
         redirectFlag=1
         #redirect_to movies_path(order: session[:order],ratings: session[:ratings])
       else
         @ratings=Hash[@all_ratings.collect {|rating| [rating, rating]}]
-        puts @ratings
+        #puts @ratings
         @movies=@movies
       end
     end
