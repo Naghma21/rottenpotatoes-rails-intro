@@ -40,7 +40,7 @@ class MoviesController < ApplicationController
     #render plain: params[:ratings].inspect
     if params[:ratings]
       @ratings=params[:ratings]
-      session[:ratings]=@ratings
+      #session[:ratings]=@ratings
       #puts "parampresent"
       #puts @ratings
       @movies=@movies.where(rating: @ratings.keys)
