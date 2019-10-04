@@ -12,6 +12,7 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings=Movie.all_ratings
+    #redirect flag is used to indicate if a url should be redirected according to session values
     redirectFlag=0
     #ordering the list according to the parameters, highlighting the background and storing it in session
     if params[:order]
@@ -19,9 +20,11 @@ class MoviesController < ApplicationController
     else
       @orderList=session[:order]
     end
+    #setting redirect flag if param value is not present for ordering movies
     if (params[:order]==nil && session[:order]!=nil)
       redirectFlag=1
     end
+    #updating session accoring to order parameter
     if params[:order]!= session[:order]
       session[:order]=@orderList
     end
@@ -42,13 +45,13 @@ class MoviesController < ApplicationController
       if session[:ratings]
         @ratings=session[:ratings]
         @movies=@movies.where(rating: @ratings.keys)
-        redirectFlag=1
+        redirectFlag=1 #setting redirect flag if param value is not present for filtering movies
       else
-        @ratings=Hash[@all_ratings.collect {|rating| [rating, rating]}]
-        session[:ratings]=@ratings
+        @ratings=Hash[@all_ratings.collect {|rating| [rating, rating]}] #setting rating to all ratings as initially all boxes should be checked
         @movies=@movies
       end
     end
+    #updating session according to chosen ratings
     if @ratings != session[:ratings]
       session[:ratings]=@ratings
     end
