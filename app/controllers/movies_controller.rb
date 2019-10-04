@@ -24,7 +24,7 @@ class MoviesController < ApplicationController
     if (params[:order]==nil && session[:order]!=nil)
       redirectFlag=1
     end
-    #updating session accoring to order parameter
+    #updating session according to order parameter
     if params[:order]!= session[:order]
       session[:order]=@orderList
     end
