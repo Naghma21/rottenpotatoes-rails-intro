@@ -36,11 +36,10 @@ class MoviesController < ApplicationController
     @movies = Movie.all
     end
     if params[:ratings]
-      @ratings=params[:ratings]
-      @movies=@movies.where(rating: @ratings.keys)
+      @ratingsList=params[:ratings]
+      @movies=@movies.where(rating: @ratingsList.keys)
     else
       if session[:ratings]
-        @ratingsList=session[:ratings]
         @movies=@movies.where(rating: @ratingsList.keys)
         redirectFlag=1
         #redirect_to movies_path(order: session[:order],ratings: session[:ratings])
