@@ -13,12 +13,11 @@ class MoviesController < ApplicationController
   def index
     @all_ratings=Movie.all_ratings
     redirectFlag=0
+    #ordering the list according to the parameters, highlighting the background and storing it in session
     if params[:order]
       @orderList=params[:order]
     else
       @orderList=session[:order]
-      
-      #redirect_to movies_path(order: session[:order],ratings: session[:ratings])
     end
     if (params[:order]==nil && session[:order]!=nil)
       redirectFlag=1
@@ -35,33 +34,25 @@ class MoviesController < ApplicationController
     else
     @movies = Movie.all
     end
-    #@ratings=params[:ratings].keys
-    #puts @ratings
-    #render plain: params[:ratings].inspect
+    #filtering the movies according to the chosen ratings while maintaining the order of movies and storing the current ratings in session
     if params[:ratings]
       @ratings=params[:ratings]
-      #session[:ratings]=@ratings
-      #puts "parampresent"
-      #puts @ratings
       @movies=@movies.where(rating: @ratings.keys)
     else
       if session[:ratings]
         @ratings=session[:ratings]
-        #puts "sessionpresent"
-        #puts @ratings
         @movies=@movies.where(rating: @ratings.keys)
         redirectFlag=1
-        #redirect_to movies_path(order: session[:order],ratings: session[:ratings])
       else
         @ratings=Hash[@all_ratings.collect {|rating| [rating, rating]}]
         session[:ratings]=@ratings
-        #puts @ratings
         @movies=@movies
       end
     end
-    if params[:ratings]!= session[:ratings]
+    if @ratings != session[:ratings]
       session[:ratings]=@ratings
     end
+    #redirecting the url according to the values in the session variable if there is no parameter values
     if redirectFlag==1
       flash.keep
       redirect_to movies_path(order: session[:order],ratings: session[:ratings])
