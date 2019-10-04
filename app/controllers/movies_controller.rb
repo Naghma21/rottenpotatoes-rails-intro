@@ -23,7 +23,7 @@ class MoviesController < ApplicationController
     if (params[:order]==nil && session[:order]!=nil)
       redirectFlag=1
     end
-    if @orderList!= session[:order]
+    if params[:order]!= session[:order]
       session[:order]=@orderList
     end
     if @orderList=="title"
@@ -35,21 +35,32 @@ class MoviesController < ApplicationController
     else
     @movies = Movie.all
     end
+    #@ratings=params[:ratings].keys
+    #puts @ratings
+    #render plain: params[:ratings].inspect
     if params[:ratings]
-      @ratingsList=params[:ratings]
-      @movies=@movies.where(rating: @ratingsList.keys)
+      @ratings=params[:ratings]
+      #session[:ratings]=@ratings
+      #puts "parampresent"
+      #puts @ratings
+      @movies=@movies.where(rating: @ratings.keys)
     else
       if session[:ratings]
-        @movies=@movies.where(rating: @ratingsList.keys)
+        @ratings=session[:ratings]
+        #puts "sessionpresent"
+        #puts @ratings
+        @movies=@movies.where(rating: @ratings.keys)
         redirectFlag=1
         #redirect_to movies_path(order: session[:order],ratings: session[:ratings])
       else
-        @ratingsList=Hash[@all_ratings.collect {|rating| [rating, rating]}]
+        @ratings=Hash[@all_ratings.collect {|rating| [rating, rating]}]
+        session[:ratings]=@ratings
+        #puts @ratings
         @movies=@movies
       end
     end
-    if @ratingsList!= session[:ratings]
-      session[:ratings]=@ratingsList
+    if params[:ratings]!= session[:ratings]
+      session[:ratings]=@ratings
     end
     if redirectFlag==1
       flash.keep
